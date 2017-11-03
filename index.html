@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Locations Map</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 400px;
+        width: 100%;
+        background-color: gray;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Locations Map</h1>
+    <div id="map"></div>
+    <script>
+    function initMap() {
+
+      var startCoords = {lat: 39.9425448, lng: -75.1278647};
+      var startZoom = 11.27;
+
+      // list of locations
+      var locations = [
+        {
+        	name: "Abington Hospital",
+        	lat: 40.119136,
+        	lng: -75.119953
+        },
+        {
+        	name: "Abington - Lansdale Hospital",
+        	lat: 40.25115,
+        	lng: -75.271454
+        },
+        {
+        	name: "Thomas Jefferson University Hospital",
+        	lat: 39.9498262,
+        	lng: -75.1584227
+        },
+        {
+        	name: "Jefferson Hospital for Neuroscience",
+        	lat: 39.9480344,
+        	lng: -75.156207
+        },
+        {
+        	name: "Methodist Hospital",
+        	lat: 39.921183,
+        	lng: -75.169701
+        },
+        {
+        	name: "Abington Jefferson Health – Blue Bell",
+        	lat: 40.140623,
+        	lng: -75.285922
+        },
+        {
+        	name: "Abington Jefferson Health – Lower Gwynedd",
+        	lat: 40.17472,
+        	lng: -75.22517
+        },
+        {
+        	name: "Abington Jefferson Health – Montgomeryville",
+        	lat: 40.2391667,
+        	lng: -75.2315047
+        },
+        {
+        	name: "Abington Jefferson Health – Warminster",
+        	lat: 40.185092,
+        	lng: -75.078765
+        },
+        {
+        	name: "Abington Jefferson Health – Willow Grove",
+        	lat: 40.164239,
+        	lng: -75.1310205
+        },
+        {
+        	name: "Jefferson - Bala Cynwyd",
+        	lat: 40.0050928,
+        	lng: -75.2192039
+        },
+        {
+        	name: "Jefferson - Bala Cynwyd",
+        	lat: 39.9998876,
+        	lng: -75.2303063
+        },
+        {
+        	name: "Jefferson Health - Smylie Times",
+        	lat: 40.0562602,
+        	lng: -75.0452195
+        },
+        {
+        	name: "Jefferson Health - Navy Yard",
+        	lat: 39.8959772,
+        	lng: -75.1740603
+        },
+        {
+        	name: "Jefferson Health - Turnersville",
+        	lat: 39.7370413,
+        	lng: -75.0468679
+        },
+        {
+        	name: "Jefferson Health - Voorhees",
+        	lat: 39.844291,
+        	lng: -74.985362
+        },
+        {
+        	name: "Jefferson Urgent Care – Flourtown",
+        	lat: 40.111191,
+        	lng: -75.210331
+        },
+        {
+        	name: "Jefferson Urgent Care - Rittenhouse",
+        	lat: 39.9521761,
+        	lng: -75.1765097
+        },
+        {
+        	name: "Jefferson Urgent Care – Smylie Times",
+        	lat: 40.0562602,
+        	lng: -75.0452195
+        },
+        {
+        	name: "Jefferson Urgent Care – Washington Square",
+        	lat: 39.9479655,
+        	lng: -75.1532154
+        },
+        {
+        	name: "Aria − Bucks County Hospital",
+        	lat: 40.1830928,
+        	lng: -74.8725508
+        },
+        {
+        	name: "Aria – Frankford Hospital",
+        	lat: 40.0196895,
+        	lng: -75.0838933
+        },
+        {
+        	name: "Aria – Torresdale Hospital",
+        	lat: 40.0716736,
+        	lng: -74.9854092
+        },
+        {
+        	name: "The Annex",
+        	lat: 40.080427,
+        	lng: -75.02851
+        },
+        {
+        	name: "The Professional Court",
+        	lat: 40.1098113,
+        	lng: -75.0309162
+        },
+        {
+        	name: "Jefferson Urgent Care – Bensalem",
+        	lat: 40.1132751,
+        	lng: -74.9587764
+        },
+        {
+        	name: "Jefferson Urgent Care – Grant Avenue",
+        	lat: 40.080427,
+        	lng: -75.02851
+        },
+        {
+        	name: "Aria Health – Center for Rehabilitation and Wellness",
+        	lat: 40.1834393,
+        	lng: -74.8680713
+        },
+        {
+        	name: "Rothman Orthopaedic Specialty Hospital – Bensalem",
+        	lat: 40.1129362,
+        	lng: -74.9627666
+        },
+        {
+        	name: "Jefferson Health - Burlington",
+        	lat: 40.0492141,
+        	lng: -74.8707033
+        },
+        {
+        	name: "Jefferson Urgent Care – Willow Grove",
+        	lat: 40.1688489,
+        	lng: -75.1262753
+        },
+        {
+        	name: "Abington Jefferson Health – Elkins Park",
+        	lat: 40.082393,
+        	lng: -75.1279097
+        },
+        {
+        	name: "Jefferson Health – Art Museum",
+        	lat: 39.963721,
+        	lng: -75.173739
+        },
+        {
+        	name: "Kennedy University Hospital - Cherry Hill",
+        	lat: 39.927982,
+        	lng: -75.015943
+        },
+        {
+        	name: "Kennedy University Hospital - Stratford",
+        	lat: 39.828275,
+        	lng: -75.008195
+        },
+        {
+        	name: "Kennedy University Hospital - Washington Township",
+        	lat: 39.735239,
+        	lng: -75.065340
+        }
+      ];
+
+      // initalize map
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 40.0556365, lng: -74.9905356},
+        zoom: 10
+      });
+
+      // list of marker objects
+      var markers = [];
+
+      // create a map marker for each location
+      for (var i = 0; i < locations.length; i++) {
+        // store new marker in list
+        markers.push(new google.maps.Marker({
+          position: {lat: locations[i].lat, lng: locations[i].lng},
+          map: map
+        }));
+      }
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvqxyz';
+
+      /*
+      var markers = locations.map(function(location, i) {
+        return new google.maps.Marker({
+          position: {lng: location.lng, lat: location.lat}
+        });
+      });
+      */
+
+      /*
+      var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      */
+
+    }
+    </script>
+    <!--<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>-->
+    <!-- Jefferson API Key: AIzaSyAdXlaNoumqLdoV5BNGvKes613OO_Zcdyw -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3Ljo3gaxiAY83sPabqHZCa7_GFA7a9Jg&callback=initMap" async defer></script>
+  </body>
+</html>

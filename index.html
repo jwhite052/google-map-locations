@@ -7,7 +7,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 400px;
+        height: 450px;
         width: 100%;
         background-color: gray;
       }
@@ -15,17 +15,78 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        font-family: Lato, sans-serif;
+      }
+      .locations-section {
+        position: relative;
+      }
+      .locations-section * {
+        box-sizing: border-box;
+      }
+      .locations-card {
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 30px;
+        width: 300px;
+        height: 450px;
+        background-color: #ccc;
+      }
+      .location-panel-title h2 {
+        background-color: #333;
+        color: #fff;
+        margin: 0;
+        padding: 0 20px;
+        font-size: 21px;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        font-weight: normal;
+        line-height: 50px;
+        height: 50px;
+      }
+      .location-panel-info {
+        padding: 0 20px;
+      }
+      .location-panel-info > ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+      }
+      .location-panel-info > ul > li {
+        margin: 10px 0;
+        padding-bottom: 10px;
+        font-size: 14px;
+        border-bottom: 1px solid #999;
+      }
+      .location-panel-info > p {
+        font-size: 14px;
       }
     </style>
   </head>
   <body>
     <h1>Locations Map</h1>
-    <div id="map"></div>
+    <div class="locations-section">
+      <div id="map"></div>
+      <div class="locations-card">
+        <div class="location-panel">
+          <div class="location-panel-title">
+            <h2>Hospitals</h2>
+          </div>
+          <div class="location-panel-info">
+            <p>Jefferson Health offers an extensive care network with offices throughout Pennsylvania, New Jersey and Delaware.</p>
+            <ul>
+              <li>Abington Hospital</li>
+              <li>Abington - Lansdale Hospital</li>
+              <li>Thomas Jefferson University Hospital</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     <script>
     function initMap() {
-
+      //var locationCard = document.getElementsByClassName('location-card')[0];
       var startCoords = {lat: 39.9425448, lng: -75.1278647};
-      var startZoom = 11.27;
+      var startZoom = 11;
 
       // list of locations
       var locations = [
@@ -214,7 +275,10 @@
       // initalize map
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.0556365, lng: -74.9905356},
-        zoom: 10
+        zoom: 9,
+        mapTypeControl: false,
+        streetViewControl: false,
+        styles: [{'featureType':'administrative','elementType':'labels.text.fill','stylers':[{'color':'#152456'}]},{'featureType':'administrative.neighborhood','elementType':'labels.text.fill','stylers':[{'color':'#569bca'}]},{'featureType':'landscape','elementType':'all','stylers':[{'color':'#f2f4f8'}]},{'featureType':'landscape','elementType':'geometry.fill','stylers':[{'color':'#ffffff'}]},{'featureType':'poi','elementType':'all','stylers':[{'visibility':'off'}]},{'featureType':'poi.park','elementType':'geometry.fill','stylers':[{'color':'#e6f3d6'},{'visibility':'on'}]},{'featureType':'road','elementType':'all','stylers':[{'saturation':-30},{'lightness':45},{'visibility':'simplified'}]},{'featureType':'road','elementType':'geometry.fill','stylers':[{'color':'#f2f4f8'}]},{'featureType':'road.highway','elementType':'all','stylers':[{'visibility':'simplified'}]},{'featureType':'road.highway','elementType':'geometry.fill','stylers':[{'color':'#cccccc'},{'visibility':'simplified'}]},{'featureType':'road.highway','elementType':'labels.text','stylers':[{'color':'#333333'}]},{'featureType':'road.arterial','elementType':'geometry.fill','stylers':[{'color':'#f4f4f4'}]},{'featureType':'road.arterial','elementType':'labels.text.fill','stylers':[{'color':'#787878'}]},{'featureType':'road.arterial','elementType':'labels.icon','stylers':[{'visibility':'off'}]},{'featureType':'transit','elementType':'all','stylers':[{'visibility':'off'}]},{'featureType':'water','elementType':'all','stylers':[{'color':'#eaf6f8'},{'visibility':'on'}]},{'featureType':'water','elementType':'geometry.fill','stylers':[{'color':'#addbf9'}]}]
       });
 
       // list of marker objects
@@ -223,25 +287,22 @@
       // create a map marker for each location
       for (var i = 0; i < locations.length; i++) {
         // store new marker in list
-        markers.push(new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: {lat: locations[i].lat, lng: locations[i].lng},
-          map: map
-        }));
-      }
-      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvqxyz';
-
-      /*
-      var markers = locations.map(function(location, i) {
-        return new google.maps.Marker({
-          position: {lng: location.lng, lat: location.lat}
+          map: map,
+          animation: google.maps.Animation.DROP
         });
-      });
-      */
-
-      /*
-      var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      */
+        marker.addListener('click', function() {
+          map.setOptions({
+            center: this.position,
+            zoom: 14
+          });
+        });
+        marker.addListener('mouseover', function() {
+          console.log('mouseover');
+        });
+        markers.push(marker);
+      }
 
     }
     </script>
